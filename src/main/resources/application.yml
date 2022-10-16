@@ -1,0 +1,39 @@
+server:
+  port: 7760
+  servlet:
+    context-path: /easy-trip
+  baseUrl: http://localhost:7760
+
+spring:
+  application:
+    name: easy-trip
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+      WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS: false
+      WRITE_DURATIONS_AS_TIMESTAMPS: true
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: plan
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    multiple-databases: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/EasyTrip
+    username: postgres
+    password: password
+
+config:
+  format:
+    dateTimeFormat: yyyy-MM-dd'T'HH:mm:ss
+    dateFormat: yyyy-MM-dd
+    timeFormat: HH:mm:ss
+
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    enabled: true
+    disable-swagger-default-url: true
