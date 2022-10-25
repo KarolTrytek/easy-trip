@@ -2,22 +2,27 @@ package pl.trytek.easytrip.data.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import pl.trytek.easytrip.data.converter.AttractionTypeConverter;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "atrakcje", schema = "public")
+@Table(name = "atrakcja", schema = "easytrip")
 @Getter
 @Setter
 @Builder
@@ -55,6 +60,16 @@ public class Attraction implements Serializable {
 
 	@Column(name="nr_telefonu")
 	private String phoneNumber;
+
+	@Column(name = "type")
+	@Convert(converter = AttractionTypeConverter.class)
+	private AttractionTypeEnum type;
+
+
+	@OneToMany(mappedBy="attraction")
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	private List<AttractionUser> attractionUsers;
 
 	@Override
 	public boolean equals(Object o) {

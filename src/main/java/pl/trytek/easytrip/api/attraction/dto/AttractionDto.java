@@ -1,4 +1,6 @@
-package pl.trytek.easytrip.api.attraction;
+package pl.trytek.easytrip.api.attraction.dto;
+
+import pl.trytek.easytrip.data.domain.AttractionTypeEnum;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -9,9 +11,11 @@ public record AttractionDto(
 
 		String name,
 
-		String description,
+		String city,
 
-		String city
+		Integer likes,
+
+		AttractionTypeEnum type
 
 ) implements Serializable {
 	@Serial

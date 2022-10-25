@@ -6,13 +6,12 @@ import org.springframework.stereotype.Repository;
 import pl.trytek.easytrip.data.domain.Attraction;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface AttractionRepository extends JpaRepository<Attraction, Long>,
 		JpaSpecificationExecutor<Attraction> {
 
-	Optional<Attraction> findOneById (Long id);
+	Attraction findOneById (Long id);
 
 	List<Attraction> findAll();
 }

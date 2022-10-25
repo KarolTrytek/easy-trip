@@ -16,13 +16,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        default_schema: plan
+        default_schema: easyTrip
         dialect: org.hibernate.dialect.PostgreSQLDialect
     multiple-databases: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/EasyTrip
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: password
+    password: postgres
 
 config:
   format:
