@@ -15,9 +15,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "users", schema = "easyTrip")
+@Table(name = "uzytkownik", schema = "easyTrip")
 @Getter
 @Setter
 @Builder
@@ -33,19 +34,24 @@ public class User{// implements UserDetails {
     @Column(name = "login")
     private String login;
 
-    @Column(name = "password")
+    @Column(name = "haslo")
     private String password;
 
     @Column(name = "rola")
     @Convert(converter = UserRoleEnumConverter.class)
     private UserRoleEnum role;
 
+    @Column(name = "data_rejestracji")
+    private LocalDate registrationDate;
+
     public User(String login,
                 String password,
-                UserRoleEnum role) {
+                UserRoleEnum role,
+                LocalDate registrationDate) {
         this.login = login;
         this.password = password;
         this.role = role;
+        this.registrationDate = registrationDate;
     }
 
 //    @Override

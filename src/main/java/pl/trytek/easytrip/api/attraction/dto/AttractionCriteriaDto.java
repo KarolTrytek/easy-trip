@@ -6,6 +6,10 @@ import java.util.List;
 
 public record AttractionCriteriaDto(
 
+        String country,
+
+        String street,
+
         String name,
 
         String city,

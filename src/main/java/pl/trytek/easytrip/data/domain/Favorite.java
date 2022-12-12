@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,14 +20,14 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name="attrakcja_uzytkownik", schema = "public")
+@Table(name="ulubione", schema = "easyTrip")
 @Getter
 @Setter
 @Builder
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttractionUser implements Serializable {
+public class Favorite implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -36,11 +37,21 @@ public class AttractionUser implements Serializable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="attraction_id")
+    @JoinColumn(name="atrakcja_id")
     @ToString.Exclude
     private Attraction attraction;
 
-    //private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="uzytkownik_id")
+    @ToString.Exclude
+    private User user;
 
+    @Column(name = "notatka")
+    private String note;
 
+//    public Favorite(Attraction attraction, User user, String note) {
+//        this.attraction = attraction;
+//        this.user = user;
+//        this.note = note;
+//    }
 }

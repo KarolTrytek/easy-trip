@@ -10,6 +10,8 @@ import pl.trytek.easytrip.data.domain.User;
 import pl.trytek.easytrip.data.domain.UserRoleEnum;
 import pl.trytek.easytrip.data.repository.UserRepository;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -27,7 +29,7 @@ public class RegistrationService {
         } else {
             String encodedPassword = bCryptPasswordEncoder.encode(params.password());
 
-            var newUser = new User(params.username(), encodedPassword, UserRoleEnum.USER);
+            var newUser = new User(params.username(), encodedPassword, UserRoleEnum.USER, LocalDate.now());
             return userRepository.save(newUser).getLogin();
         }
     }

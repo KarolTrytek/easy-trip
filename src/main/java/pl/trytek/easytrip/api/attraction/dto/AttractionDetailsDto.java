@@ -1,29 +1,49 @@
 package pl.trytek.easytrip.api.attraction.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import pl.trytek.easytrip.data.domain.AttractionTypeEnum;
 
-import javax.persistence.Column;
 
 public record AttractionDetailsDto(
 
-    Long id,
+        @Schema(name = "Id atrakcji")
+        Long id,
 
-    String name,
+        @Schema(name = "Nazwa atrakcji")
+        String name,
 
-    String city,
+        @Schema(name = "Miejscowosc")
+        String city,
 
-    Integer likes,
+        @Schema(name = "Ilość polubien")
+        Integer likes,
 
-    AttractionTypeEnum type,
+        @Schema(name = "Typ atrakcji")
+        AttractionTypeEnum type,
 
-    String postalCode,
+        @Schema(name = "Kod pocztowy")
+        String postalCode,
 
-    String street,
+        @Schema(name = "Ulica")
+        String street,
 
-    String buildingNumber,
+        @Schema(name = "nr_budynku")
+        String buildingNumber,
 
-    String apartmentNumber,
+        @Schema(name ="nr_lokalu")
+        String apartmentNumber,
 
-    String phoneNumber
+        @Schema(name ="nr_telefonu")
+        String phoneNumber,
 
-){}
+        @Schema(name ="opis")
+        String description,
+
+        @Schema(name ="czy ulubiona")
+        Boolean favourite,
+
+        @Schema(name ="czy polubiona")
+        Boolean like
+
+) {
+}

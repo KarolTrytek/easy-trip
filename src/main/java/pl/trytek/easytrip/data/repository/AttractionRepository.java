@@ -1,5 +1,6 @@
 package pl.trytek.easytrip.data.repository;
 
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -13,5 +14,5 @@ public interface AttractionRepository extends JpaRepository<Attraction, Long>,
 
 	Attraction findOneById (Long id);
 
-	List<Attraction> findAll();
+	@NonNull List<Attraction> findAll();
 }

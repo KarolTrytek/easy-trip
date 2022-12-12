@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.trytek.easytrip.api.user.dto.UserDto;
+import pl.trytek.easytrip.api.user.dto.UserUpdateDto;
 import pl.trytek.easytrip.data.domain.UserRoleEnum;
 import pl.trytek.easytrip.data.repository.UserRepository;
 
@@ -47,5 +49,14 @@ public class UserService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(role.getCode()));
         return authorities;
+    }
+
+    public UserDto getUserById(Long id) {
+        return null;
+    }
+
+    public String updateUser(Long userId, UserUpdateDto updateUser) {
+        //TODO ddadd
+        return null;
     }
 }
