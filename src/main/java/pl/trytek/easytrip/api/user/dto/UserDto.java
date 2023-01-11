@@ -1,15 +1,11 @@
 package pl.trytek.easytrip.api.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import pl.trytek.easytrip.data.domain.UserRoleEnum;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -25,7 +21,7 @@ public class UserDto implements Serializable {
 
     private String login;
 
-    private UserRoleEnum role;
+    private List<String> roles;
 
     private LocalDate registrationDate;
 }

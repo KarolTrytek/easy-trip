@@ -12,6 +12,8 @@ spring:
       WRITE_DATES_AS_TIMESTAMPS: false
       WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS: false
       WRITE_DURATIONS_AS_TIMESTAMPS: true
+  mvc:
+    dispatch-options-request: true
   jpa:
     properties:
       hibernate:
@@ -37,3 +39,15 @@ springdoc:
   swagger-ui:
     enabled: true
     disable-swagger-default-url: true
+
+logging:
+  appender: default
+  file:
+    path: ./logs/
+  level:
+    pl.trytek.easytrip: debug
+    org:
+      springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type.descriptor.sql.BasicBinder: TRACE

@@ -7,6 +7,7 @@ import pl.trytek.easytrip.data.domain.Attraction;
 import pl.trytek.easytrip.data.domain.Favorite;
 import pl.trytek.easytrip.data.domain.User;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,4 +17,6 @@ public interface FavouriteRepository extends JpaRepository<Favorite, Long>,
      Favorite findByIdAndUserLogin(Long id, String login);
 
      Optional<Favorite> findByAttractionAndUser(Attraction attraction, User user);
+
+    List<Favorite> findAllByUserLogin(String login);
 }

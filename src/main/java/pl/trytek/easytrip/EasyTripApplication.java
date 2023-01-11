@@ -21,7 +21,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @OpenAPIDefinition(info =
 @Info(title = "Easy-Trip Rest API", version = "1.0", description = "Easy-Trip Rest API desc",
 		contact = @Contact(url = "https://github.com/KarolTrytek", name = "Easy-Trip", email = "k_trytek@outlook.com")),
-		security = @SecurityRequirement(name = "basic Auth"),
+		security = @SecurityRequirement(name = "token"),
 		servers = @Server(url = "http://127.0.0.1:7060/easy-trip", description = "Easy-Trip server"))
 //@EnableSwagger2
 public class EasyTripApplication extends SpringBootServletInitializer {

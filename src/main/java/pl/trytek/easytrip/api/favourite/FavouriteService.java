@@ -50,13 +50,15 @@ public class FavouriteService {
 
         List<FavouriteCityDto> favouriteCities = new ArrayList<>();
 
-        var favourites = favouriteRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> predicatesList = new ArrayList<>();
-            //JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.USER, User_.LOGIN, principal.getName());
-            JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.USER, User_.ID, 2);
-            Predicate[] predicates = predicatesList.toArray(new Predicate[0]);
-            return criteriaBuilder.and(predicates);
-        });
+        var favourites = favouriteRepository.findAllByUserLogin(principal.getName());
+
+//                (root, criteriaQuery, criteriaBuilder) -> {
+//            List<Predicate> predicatesList = new ArrayList<>();
+//            JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.USER, User_.LOGIN, principal.getName());
+//            //JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.USER, User_.ID, 2);
+//            Predicate[] predicates = predicatesList.toArray(new Predicate[0]);
+//            return criteriaBuilder.and(predicates);
+//        });
         var group = favourites.stream().collect(Collectors.groupingBy(fav -> fav.getAttraction().getCity()));
 
         for (Map.Entry<String, List<Favorite>> entry : group.entrySet()) {
@@ -73,8 +75,7 @@ public class FavouriteService {
         favouriteRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicatesList = new ArrayList<>();
             JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.ATTRACTION, Attraction_.CITY, city);
-            //JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.USER, User_.LOGIN, principal.getName());
-            JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.USER, User_.ID, 2);
+            JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.USER, User_.LOGIN, principal.getName());
             Predicate[] predicates = predicatesList.toArray(new Predicate[0]);
             return criteriaBuilder.and(predicates);
         }).forEach(fav -> favouriteAttractions.add(new FavouriteAttractionDto(fav.getAttraction().getId(), fav.getId(), fav.getAttraction().getName(), fav.getNote())));

@@ -122,4 +122,8 @@ public class AttractionService {
 
         likeRepository.delete(optLike.get());
     }
+
+    public String addAttraction(AttractionCriteriaDto criteria) {
+        return null;
+    }
 }

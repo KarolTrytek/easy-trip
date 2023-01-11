@@ -1,21 +1,11 @@
 package pl.trytek.easytrip.data.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import pl.trytek.easytrip.data.converter.UserRoleEnumConverter;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "uzytkownik", schema = "easyTrip")
@@ -25,7 +15,7 @@ import java.time.LocalDate;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class User{// implements UserDetails {
+public class User {// implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,22 +27,26 @@ public class User{// implements UserDetails {
     @Column(name = "haslo")
     private String password;
 
-    @Column(name = "rola")
-    @Convert(converter = UserRoleEnumConverter.class)
-    private UserRoleEnum role;
+
+    @Builder.Default
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+   // @OneToMany(mappedBy="user",fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy="user",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<UserRole> roles = new HashSet<>();
 
     @Column(name = "data_rejestracji")
     private LocalDate registrationDate;
 
     public User(String login,
                 String password,
-                UserRoleEnum role,
-                LocalDate registrationDate) {
+                LocalDate registrationDate
+                ) {
         this.login = login;
         this.password = password;
-        this.role = role;
         this.registrationDate = registrationDate;
     }
+}
 
 //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -84,4 +78,4 @@ public class User{// implements UserDetails {
 //    public boolean isEnabled() {
 //        return true;
 //    }
-}
+

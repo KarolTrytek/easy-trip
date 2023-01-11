@@ -14,6 +14,7 @@ public enum ExceptionCode {
 	RESPONSE_API_ERR(105),
 	BAD_REQUEST(400),
 	UNPROCESSABLE(422),
+	UNAUTHORIZED(401),
 	NOT_FOUND_ERR(404);
 
 	private final int code;

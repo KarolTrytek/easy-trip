@@ -23,9 +23,6 @@ public record AttractionGridDto(
 		@Schema(name = "Liczba polubien")
 		Integer likes,
 
-		@Schema(name = "czy darmowe")
-		Boolean free,
-
 		@Schema(name ="czy polubiona")
 		Boolean like,
 

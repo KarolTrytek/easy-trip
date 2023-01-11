@@ -15,7 +15,6 @@ import static pl.trytek.easytrip.common.util.StringUtils.API;
 
 @AllArgsConstructor
 @RestController
-@CrossOrigin
 @RequestMapping(API + "favourite")
 public class FavouriteController {
 

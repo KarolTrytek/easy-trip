@@ -67,9 +67,6 @@ public class Attraction implements Serializable {
 	@Column(name="nr_telefonu")
 	private String phoneNumber;
 
-	@Column(name="czy_darmowe")
-	private Boolean free;
-
 	@Column(name = "typ")
 	@Convert(converter = AttractionTypeConverter.class)
 	private AttractionTypeEnum type;

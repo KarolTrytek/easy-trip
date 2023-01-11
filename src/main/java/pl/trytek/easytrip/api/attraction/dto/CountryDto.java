@@ -1,14 +1,13 @@
-package pl.trytek.easytrip.api.user.dto;
+package pl.trytek.easytrip.api.attraction.dto;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Set;
 
-public record UserUpdateDto(
+public record CountryDto(
 
-        Long userId,
+        Long id,
 
-        Set<String> roles
+        String name
 
 ) implements Serializable {
     @Serial
