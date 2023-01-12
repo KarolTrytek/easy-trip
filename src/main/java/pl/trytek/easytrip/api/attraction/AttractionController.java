@@ -72,14 +72,25 @@ public class AttractionController {
         return JsonResponseBuilder.ok(attractionService.getAttractions(criteria));
     }
 
-    @Operation(summary = "Pobranie listy atrakcji", description = "Pobiera listy atrakcji spełniającej podane kryteria",
+    @Operation(summary = "Dodanie atrakcji", description = "Dodanie atrakcji",
             tags = {SWAGGER_TAG }, responses = { @ApiResponse(responseCode = "200", description = RESPONSE_OK),
             @ApiResponse(responseCode = "400", description = BAD_REQUEST, content = @Content),
             @ApiResponse(responseCode = "401", description = UNAUTHORIZED_ACCESS, content = @Content),})
     @CrossOrigin
-    @PostMapping()
+    @PostMapping("add")
     public JsonResponse<String> addAttraction(@ParameterObject AttractionCriteriaDto criteria) {
         return JsonResponseBuilder.ok(attractionService.addAttraction(criteria));
+    }
+
+    @Operation(summary = "Usunięcie atrakcji", description = "Usunięcie atrakcji",
+            tags = {SWAGGER_TAG }, responses = { @ApiResponse(responseCode = "200", description = RESPONSE_OK),
+            @ApiResponse(responseCode = "400", description = BAD_REQUEST, content = @Content),
+            @ApiResponse(responseCode = "401", description = UNAUTHORIZED_ACCESS, content = @Content),})
+    @CrossOrigin
+    @DeleteMapping("{attractionId}")
+    public JsonResponse<Void> deleteAttraction(@PathVariable Long attractionId) {
+        attractionService.deleteAttraction(attractionId);
+        return JsonResponseBuilder.ok();
     }
 
 

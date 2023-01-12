@@ -10,6 +10,7 @@ public enum AttractionTypeEnum {
     PARK("P"),
     BUILDING("B"),
     WATER("W"),
+    VIEW("V"),
     RELIGIOUS("R");
 
     private static final Map<String, AttractionTypeEnum> MAP;

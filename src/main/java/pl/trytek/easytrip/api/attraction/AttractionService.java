@@ -10,13 +10,10 @@ import pl.trytek.easytrip.api.attraction.dto.AttractionGridDto;
 import pl.trytek.easytrip.api.attraction.dto.CountryDto;
 import pl.trytek.easytrip.common.exception.EasyTripApiException;
 import pl.trytek.easytrip.common.exception.ExceptionCode;
-import pl.trytek.easytrip.common.util.CriteriaQueryUtils;
 import pl.trytek.easytrip.common.util.JPAUtils;
 import pl.trytek.easytrip.data.domain.*;
 import pl.trytek.easytrip.data.repository.*;
 
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
 import javax.persistence.criteria.Predicate;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -26,20 +23,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AttractionService {
-
-    private final EntityManager entityManager;
     private final AttractionRepository attractionRepository;
     private final LikeRepository likeRepository;
     private final UserRepository userRepository;
     private final CountryRepository countryRepository;
     private final FavouriteRepository favouriteRepository;
     private final AttractionMapper mapper;
-    private CriteriaQueryUtils criteriaQueryUtils;
-
-    @PostConstruct
-    public void init() {
-        criteriaQueryUtils = CriteriaQueryUtils.newInstance(entityManager);
-    }
 
     @Transactional
     public List<AttractionGridDto> getAttractions() {
@@ -78,22 +67,15 @@ public class AttractionService {
 
         var attraction = attractionRepository.findOneById(attractionId);
 
-        User user;
-
-        if(principal != null) {
-            user = userRepository.findOneByLogin(principal.getName());
-        } else {
-            user = userRepository.findAll().stream().findFirst().get();
-        }
+        User user = userRepository.findOneByLogin(principal.getName());
 
         var optLike = likeRepository.findByAttractionAndUser(attraction, user);
-        if(optLike.isPresent()){
-             likeRepository.delete(optLike.get());
-             return null;
+        if (optLike.isPresent()) {
+            likeRepository.delete(optLike.get());
+            return null;
         } else {
             return likeRepository.save(new Like(attraction, user)).getId();
         }
-
     }
 
     public Long addAttractionToFavourite(Long attractionId, Principal principal) {
@@ -109,21 +91,15 @@ public class AttractionService {
         return favouriteRepository.save(Favorite.builder().attraction(attraction).user(user).build()).getId();
     }
 
-
-    public void unlikeAttraction(Long attractionId, Principal principal) {
-
-        var attraction = attractionRepository.findOneById(attractionId);
-        var user = userRepository.findOneByLogin(principal.getName());
-
-        var optLike = likeRepository.findByAttractionAndUser(attraction, user);
-        if (optLike.isEmpty()) {
-            throw new EasyTripApiException(ExceptionCode.VALIDATION_ERR, "Brak polubienia atrakcji");
-        }
-
-        likeRepository.delete(optLike.get());
-    }
-
     public String addAttraction(AttractionCriteriaDto criteria) {
         return null;
+    }
+
+    public void deleteAttraction(Long attractionId) {
+        attractionRepository.deleteById(attractionId);
+
+        var favouritesToDelete = favouriteRepository.findAllByAttractionId(attractionId);
+
+        favouriteRepository.deleteAll(favouritesToDelete);
     }
 }

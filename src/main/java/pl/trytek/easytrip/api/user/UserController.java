@@ -1,5 +1,8 @@
 package pl.trytek.easytrip.api.user;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.trytek.easytrip.api.user.dto.UserDto;
@@ -13,12 +16,15 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
-import static pl.trytek.easytrip.common.util.StringUtils.API;
+import static pl.trytek.easytrip.common.util.StringUtils.*;
+import static pl.trytek.easytrip.common.util.StringUtils.UNAUTHORIZED_ACCESS;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping(API + "user")
 public class UserController {
+
+    private static final String SWAGGER_TAG = "Zarządzanie użytkownikami";
 
     private final UserService userService;
 
@@ -27,16 +33,15 @@ public class UserController {
         return JsonResponseBuilder.ok(userService.getLoggedUserData(principal));
     }
 
-    @GetMapping("{userId}")
-    public JsonResponse<UserDto> getUserById(Long id) {
-        return JsonResponseBuilder.ok(userService.getUserById(id));
-    }
-
     @PutMapping()
     public JsonResponse<String> updateUser(@RequestBody UserUpdateDto updateUser) {
         return JsonResponseBuilder.ok(userService.updateUser(updateUser));
     }
 
+    @Operation(summary = "Pobranie listy użytkowników", description = "Pobiera listy użytkowników",
+            tags = {SWAGGER_TAG }, responses = { @ApiResponse(responseCode = "200", description = RESPONSE_OK),
+            @ApiResponse(responseCode = "400", description = BAD_REQUEST, content = @Content),
+            @ApiResponse(responseCode = "401", description = UNAUTHORIZED_ACCESS, content = @Content),})
     @GetMapping("list")
     public JsonResponse<List<UserDto>> getUsers() {
         return JsonResponseBuilder.ok(userService.getUsers());

@@ -20,7 +20,6 @@ public interface UserMapper {
 
     List<UserDto> map(List<User> entities);
 
-
     default List<String> mapUserRolesToNames(Set<UserRole> roles) {
         return roles.stream().map(role->role.getRole().getName()).sorted().toList();
     }

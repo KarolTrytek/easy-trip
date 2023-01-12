@@ -12,7 +12,9 @@ import pl.trytek.easytrip.data.domain.Attraction_;
 import pl.trytek.easytrip.data.domain.Favorite;
 import pl.trytek.easytrip.data.domain.Favorite_;
 import pl.trytek.easytrip.data.domain.User_;
+import pl.trytek.easytrip.data.repository.AttractionRepository;
 import pl.trytek.easytrip.data.repository.FavouriteRepository;
+import pl.trytek.easytrip.data.repository.UserRepository;
 
 import javax.persistence.criteria.Predicate;
 import java.security.Principal;
@@ -28,13 +30,24 @@ import static java.util.Comparator.comparing;
 @RequiredArgsConstructor
 public class FavouriteService {
     private final FavouriteRepository favouriteRepository;
+    private final UserRepository userRepository;
+    private final AttractionRepository attractionRepository;
 
     public Long editFavouriteAttractionNote(Long favouriteId, String note) {
-        var favouriteAttraction = favouriteRepository.findById(favouriteId).orElseThrow(() -> new EasyTripApiException(ExceptionCode.VALIDATION_ERR, "Brak ulubionej atrakcji"));
-//TODO sprawdzenie, czy favourite Id nalezy do zalogowango uzytkownika
+        var favouriteAttraction = favouriteRepository.findById(favouriteId)
+                .orElseThrow(() -> new EasyTripApiException(ExceptionCode.VALIDATION_ERR, "Brak ulubionej atrakcji"));
+
         favouriteAttraction.setNote(note);
 
         return favouriteRepository.save(favouriteAttraction).getId();
+    }
+
+    public Long addFavourite(Long attractionId, Principal principal, String note) {
+
+        var user = userRepository.findOneByLogin(principal.getName());
+        var attraction = attractionRepository.findOneById(attractionId);
+
+        return favouriteRepository.save(new Favorite(null, attraction, user, note)).getId();
     }
 
     public FavouriteAttractionDto getFavourite(Long favouriteId) {
@@ -52,13 +65,6 @@ public class FavouriteService {
 
         var favourites = favouriteRepository.findAllByUserLogin(principal.getName());
 
-//                (root, criteriaQuery, criteriaBuilder) -> {
-//            List<Predicate> predicatesList = new ArrayList<>();
-//            JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.USER, User_.LOGIN, principal.getName());
-//            //JPAUtils.setEqualWithChild(root, criteriaBuilder, predicatesList, Favorite_.USER, User_.ID, 2);
-//            Predicate[] predicates = predicatesList.toArray(new Predicate[0]);
-//            return criteriaBuilder.and(predicates);
-//        });
         var group = favourites.stream().collect(Collectors.groupingBy(fav -> fav.getAttraction().getCity()));
 
         for (Map.Entry<String, List<Favorite>> entry : group.entrySet()) {
@@ -82,10 +88,13 @@ public class FavouriteService {
         return favouriteAttractions;
     }
 
-    public void deleteAttractionFromFavourites(Long favouriteId, Principal principal) {
-//        var favouriteToDelete = favouriteRepository.findByIdAndUserLogin(favouriteId, principal.getName());
-//        favouriteRepository.delete(favouriteToDelete);
-
+    public void deleteFavourite(Long favouriteId) {
         favouriteRepository.delete(favouriteRepository.findById(favouriteId).orElseThrow());
+    }
+
+    public void deleteFavouriteByAttractionId(Long attractionId, Principal principal) {
+        var favouriteToDelete = favouriteRepository.findByAttractionIdAndUserLogin(attractionId, principal.getName());
+
+        favouriteRepository.delete(favouriteToDelete);
     }
 }

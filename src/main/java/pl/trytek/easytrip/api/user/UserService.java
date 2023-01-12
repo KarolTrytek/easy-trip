@@ -67,10 +67,6 @@ public class UserService implements UserDetailsService {
         return authorities;
     }
 
-    public UserDto getUserById(Long id) {
-        return null;
-    }
-
     @Transactional
     public String updateUser(UserUpdateDto updateUser) {
         var userToUpdate = userRepository.findById(updateUser.userId()).orElseThrow(() -> new EasyTripApiException(ExceptionCode.VALIDATION_ERR, "Brak uzytkownika o podanym id"));
@@ -115,7 +111,7 @@ public class UserService implements UserDetailsService {
                 String username = decodedJWT.getSubject();
 
                 User user = userRepository.findOneByLogin(username);
-                var userRoles = user.getRoles().stream().map(role->role.getRole().getName()).toList();
+                var userRoles = user.getRoles().stream().map(role -> role.getRole().getName()).toList();
 
                 String access_token = JWT.create()
                         .withSubject(user.getLogin())
@@ -125,12 +121,6 @@ public class UserService implements UserDetailsService {
 
                 response.setHeader("access_token", access_token);
                 response.setHeader("refresh_token", refresh_token);
-                //response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-//                response.getWriter().write("{\"access_token\":" + "\"" + access_token + "\"," +
-//                        " \"refresh_token\":" + "\"" + refresh_token + "\"," +
-//                        " \"roles\":" + "\"" + userRoles + "\"," +
-//                        " \"status\":" + "\"" + "200" + "\"," +
-//                        " \"user_name\":" + "\"" + user.getLogin() + "\"}");
 
                 JSONObject jsonTokens = new JSONObject();
                 jsonTokens.put("access_token", access_token);
@@ -139,17 +129,7 @@ public class UserService implements UserDetailsService {
                 jsonTokens.put("roles", userRoles);
                 jsonTokens.put("user_name", user.getLogin());
 
-//                JSONArray roles = new JSONArray();
-//                JSONObject role = new JSONObject();
-//                role.put("refresh_token", refresh_token);
-
                 tokens = jsonTokens.toString();
-//                        String.format(
-//                        "{\"access_token\":\"%s\"," +
-//                        " \"refresh_token\":\"%s\"" +
-//                        " \"roles\":" + "\"" + userRoles + "\"," +
-//                        " \"status\":" + "\"" + "200" + "\"," +
-//                        " \"user_name\":" + "\"" + user.getLogin() + "\"}", access_token, refresh_token);
 
             } catch (Exception e) {
                 log.error("Error logging in: {}", e.getMessage());
@@ -163,7 +143,4 @@ public class UserService implements UserDetailsService {
         return tokens;
     }
 
-
 }
-
-

@@ -94,20 +94,6 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             return JsonResponseBuilder.error(HttpStatus.UNPROCESSABLE_ENTITY, null, ex.getMessage());
     }
 
-//    /**
-//     * Obsługuje błąd SystemUserAuthorizationException.
-//     *
-//     * @param ex     wyjątek
-//     * @param request request
-//     * @return opakowana w JsonResponse odpowiedź
-//     */
-//    @ExceptionHandler({SystemUserAuthorizationException.class})
-//    @ResponseBody
-//    public JsonResponse<Object> handleSystemUserAuthorizationException(final SystemUserAuthorizationException ex, final WebRequest request) {
-//        logger.error("SystemUserAuthorizationException", ex);
-//        return JsonResponseBuilder.error(HttpStatus.UNAUTHORIZED, null, ex.getMessage());
-//    }
-
     @Override
     @ResponseBody
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

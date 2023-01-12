@@ -15,8 +15,11 @@ public interface FavouriteRepository extends JpaRepository<Favorite, Long>,
         JpaSpecificationExecutor<Favorite> {
 
      Favorite findByIdAndUserLogin(Long id, String login);
+     Favorite findByAttractionIdAndUserLogin(Long id, String login);
 
-     Optional<Favorite> findByAttractionAndUser(Attraction attraction, User user);
+     List<Favorite> findAllByAttractionId(Long attractionId);
+
+    Optional<Favorite> findByAttractionAndUser(Attraction attraction, User user);
 
     List<Favorite> findAllByUserLogin(String login);
 }

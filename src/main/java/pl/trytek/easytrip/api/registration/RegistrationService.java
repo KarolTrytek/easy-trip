@@ -11,7 +11,6 @@ import pl.trytek.easytrip.data.domain.User;
 import pl.trytek.easytrip.data.domain.UserRole;
 import pl.trytek.easytrip.data.repository.RoleRepository;
 import pl.trytek.easytrip.data.repository.UserRepository;
-import pl.trytek.easytrip.data.repository.UserRoleRepository;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -26,7 +25,6 @@ public class RegistrationService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UserRoleRepository userRoleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public String register(RegistrationDto params) {
@@ -40,43 +38,13 @@ public class RegistrationService {
 
             var roleFromDb = roleRepository.findByName(USER);
 
-
             var newUser = new User(params.username(), encodedPassword, LocalDate.now());
-
-           // var newUserRole = new UserRole(newUser, roleFromDb);
-
-
-          // var newRole =  addRoleToUser(newUser, USER);
-
-           // userRepository.save(newUser);
-
             var newUserRole = new UserRole( newUser, roleFromDb);
-
-            //userRoleRepository.save(newUserRole);
 
             newUser.setRoles(Set.of(newUserRole));
 
-            userRepository.save(newUser);
-
-
-
-            return newUser.getLogin();
+            return userRepository.save(newUser).getLogin();
         }
     }
-
-//    private UserRole addRoleToUser(User user, String roleName) {
-//        var roles = user.getRoles();
-//        var roleFromDb = roleRepository.findByName(roleName);
-//        var newUserRole = new UserRole(user, roleFromDb);
-//
-//        roles.add(newUserRole);
-//        user.setRoles(roles);
-//        //userRepository.save(user);
-//
-//        return newUserRole;
-//
-//       // userRoleRepository.save(newUserRole);
-//
-//    }
 }
 

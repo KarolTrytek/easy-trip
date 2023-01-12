@@ -45,20 +45,17 @@ public class WebSecurityConfig {
                                 .antMatchers("/dawwa").authenticated()
                                 //.antMatchers("/api/user").authenticated()
                                 //.antMatchers("/api/favourite/*").authenticated()
+                                //.antMatchers("/api/attraction/add").hasAnyAuthority("admin", "moderator")
                                 //.antMatchers("/api/user/list").hasAuthority("admin") //gdy odkomentowane to nie przechodzi cors przez 320 na options
                                 )
                 .formLogin().permitAll().and()
                 //.cors().and()
-                //.cors().configurationSource(corsConfigurationSource()).and()
                 .csrf().disable();
 
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(new CustomAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));
-        //http.addFilter(new WebCorsConfig());
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-        //http.cors().configurationSource(corsConfigurationSource());
-       // http.cors().configurationSource(corsConfigurationSource());
 
         return http.build();
     }
@@ -77,26 +74,4 @@ public class WebSecurityConfig {
         return source;
     }
 
-//    @Bean
-//    public WebMvcConfigurer corsMappingConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//               registry.addMapping("/easy-trip/login").allowedOrigins("http://localhost:4200");
-//            }
-//        };
-//    }
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                WebConfigProperties.Cors cors = webConfigProperties.getCors();
-//                registry.addMapping("/**")
-//                        .allowedOrigins(cors.getAllowedOrigins())
-//                        .allowedMethods(cors.getAllowedMethods())
-//                        .maxAge(cors.getMaxAge())
-//                        .allowedHeaders(cors.getAllowedHeaders())
-//                        .exposedHeaders(cors.getExposedHeaders());
-//            }
-//        };
-//    }
 }
